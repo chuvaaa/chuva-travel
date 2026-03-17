@@ -1029,26 +1029,59 @@
       document.getElementById('area-' + areaId).classList.add('active');
     }
 
-    // 별 즐겨찾기
+    // 별 즐겨찾기 (API 사용 시 서버, 아니면 LocalStorage 폴백)
     (function() {
-      var favs = JSON.parse(localStorage.getItem('restaurant_favs') || '{}');
+      var TRIP_ID = '202604';
+      var API_BASE = '/api/favorites/' + TRIP_ID;
       var cards = document.querySelectorAll('.restaurant-card');
-      cards.forEach(function(card, i) {
-        var btn = document.createElement('button');
-        btn.className = 'fav-btn' + (favs[i] ? ' active' : '');
-        btn.textContent = favs[i] ? '\u2605' : '\u2606';
-        btn.onclick = function(e) {
-          e.preventDefault();
-          e.stopPropagation();
-          favs[i] = !favs[i];
-          btn.textContent = favs[i] ? '\u2605' : '\u2606';
-          btn.style.color = favs[i] ? '#FFB300' : '#999';
-          btn.className = 'fav-btn' + (favs[i] ? ' active' : '');
-          localStorage.setItem('restaurant_favs', JSON.stringify(favs));
-        };
-        btn.style.color = favs[i] ? '#FFB300' : '#999';
-        card.appendChild(btn);
-      });
+      var favs = JSON.parse(localStorage.getItem('restaurant_favs_' + TRIP_ID) || '{}');
+
+      function renderBtn(btn, active) {
+        btn.textContent = active ? '\u2605' : '\u2606';
+        btn.style.color = active ? '#FFB300' : '#999';
+        btn.className = 'fav-btn' + (active ? ' active' : '');
+      }
+
+      function initButtons() {
+        cards.forEach(function(card, i) {
+          var btn = document.createElement('button');
+          renderBtn(btn, !!favs[i]);
+          btn.onclick = function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            // API 호출 시도
+            fetch(API_BASE + '/' + i, { method: 'POST' })
+              .then(function(r) { return r.json(); })
+              .then(function(data) {
+                favs[i] = data.favorited;
+                renderBtn(btn, data.favorited);
+                localStorage.setItem('restaurant_favs_' + TRIP_ID, JSON.stringify(favs));
+              })
+              .catch(function() {
+                // API 실패 시 LocalStorage 폴백
+                favs[i] = !favs[i];
+                renderBtn(btn, favs[i]);
+                localStorage.setItem('restaurant_favs_' + TRIP_ID, JSON.stringify(favs));
+              });
+          };
+          card.appendChild(btn);
+        });
+      }
+
+      // 서버에서 즐겨찾기 로드 시도, 실패 시 LocalStorage 사용
+      fetch(API_BASE)
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          cards.forEach(function(card, i) {
+            var key = TRIP_ID + ':' + i;
+            favs[i] = !!data[key];
+          });
+          localStorage.setItem('restaurant_favs_' + TRIP_ID, JSON.stringify(favs));
+          initButtons();
+        })
+        .catch(function() {
+          initButtons();
+        });
     })();
   </script>
 
