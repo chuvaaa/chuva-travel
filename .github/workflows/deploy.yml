@@ -1,0 +1,26 @@
+name: Deploy to EC2
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ec2-user
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            cd chuva-travel
+            git pull origin main
+            ./mvnw package -DskipTests -q
+            pkill -f 'my-travel' || true
+            sleep 2
+            nohup java -jar target/my-travel-1.0.0.jar > app.log 2>&1 &
+            sleep 10
+            curl -s -o /dev/null -w '%{http_code}' http://localhost:8080/
