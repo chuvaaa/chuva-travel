@@ -298,6 +298,121 @@
     .fav-btn.active { background: #FFF8E1; }
 
     /* Scroll Top Button */
+    /* Add Button */
+    .add-btn {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      border: 2px dashed var(--border);
+      border-radius: 16px;
+      background: none;
+      color: var(--text-secondary);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      margin-bottom: 12px;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .add-btn:active { background: #F0F0F5; }
+
+    /* Modal */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 300;
+      align-items: flex-end;
+      justify-content: center;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal {
+      background: var(--card);
+      border-radius: 20px 20px 0 0;
+      width: 100%;
+      max-width: 500px;
+      max-height: 85vh;
+      overflow-y: auto;
+      padding: 24px 20px;
+      animation: slideUp 0.3s ease;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
+    }
+
+    .modal-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 14px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+    }
+
+    .form-group input, .form-group textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 14px;
+      font-family: inherit;
+      -webkit-appearance: none;
+    }
+
+    .form-group input:focus, .form-group textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 60px;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .modal-actions button {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .btn-cancel {
+      background: #F0F0F5;
+      color: var(--text);
+    }
+
+    .btn-save {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-save:active { opacity: 0.8; }
+
     .scroll-top-btn {
       position: fixed;
       bottom: 24px;
@@ -630,78 +745,66 @@
 
     <!-- Accommodation Tab -->
     <div id="tab-accommodation" class="tab-content">
+      <div id="accom-list"></div>
+      <button class="add-btn" onclick="openAccomModal()">+ 숙소 추가</button>
+    </div>
 
-      <div class="section-title">DAY 1 숙소</div>
-      <div class="card">
-        <div class="card-header">
-          <div class="card-icon" style="background:#E8EAF6;">🏨</div>
-          <div>
-            <div class="card-title">Hotel Edge Nakasu</div>
-            <div class="card-subtitle">호텔 엣지 나카스 · 후쿠오카</div>
-          </div>
+    <!-- Accommodation Modal -->
+    <div class="modal-overlay" id="accomModal">
+      <div class="modal">
+        <div class="modal-title" id="accomModalTitle">숙소 추가</div>
+        <input type="hidden" id="accom-edit-id">
+        <div class="form-group">
+          <label>숙소명</label>
+          <input type="text" id="accom-name" placeholder="예: Hotel Edge Nakasu">
         </div>
-        <div class="card-body">
-          <div class="info-row">
-            <span class="info-label">체크인</span>
-            <span class="info-value">4.17 (금)</span>
-          </div>
-          <div class="info-row">
-            <span class="info-label">체크아웃</span>
-            <span class="info-value">4.18 (토)</span>
-          </div>
-          <div class="info-row">
-            <span class="info-label">숙박</span>
-            <span class="info-value">1박</span>
-          </div>
-          <div class="info-row">
-            <span class="info-label">예약 사이트</span>
-            <span class="info-value">Booking.com</span>
-          </div>
-          <div class="info-row">
-            <span class="info-label">예약 계정</span>
-            <span class="info-value">acsmia@gmail.com</span>
-          </div>
-          <div class="info-row">
-            <span class="info-label">예약번호</span>
-            <span class="info-value">5373007294</span>
-          </div>
-          <div class="info-row">
-            <span class="info-label">PIN 코드</span>
-            <span class="info-value">8629</span>
-          </div>
+        <div class="form-group">
+          <label>한국어명 / 지역</label>
+          <input type="text" id="accom-nameKr" placeholder="예: 호텔 엣지 나카스 · 후쿠오카">
         </div>
-        <div class="accom-highlight">
-          <a href="https://maps.app.goo.gl/mLi2BcCHzmKq5FMB7" target="_blank" class="map-link" style="margin:0;">📍 Google Maps에서 보기</a>
+        <div class="form-group">
+          <label>지역</label>
+          <input type="text" id="accom-area" placeholder="예: 후쿠오카, 기타큐슈">
         </div>
-      </div>
-
-      <div class="section-title">DAY 2~3 숙소 (기타큐슈)</div>
-      <div class="card">
-        <div class="card-header">
-          <div class="card-icon" style="background:#E0F2F1;">🏨</div>
-          <div>
-            <div class="card-title">숙소명 미정</div>
-            <div class="card-subtitle">기타큐슈 · 2박</div>
-          </div>
+        <div class="form-group">
+          <label>체크인</label>
+          <input type="text" id="accom-checkIn" placeholder="예: 4.17 (금)">
         </div>
-        <div class="card-body">
-          <div class="info-row">
-            <span class="info-label">체크인</span>
-            <span class="info-value">4.18 (토)</span>
-          </div>
-          <div class="info-row">
-            <span class="info-label">체크아웃</span>
-            <span class="info-value">4.20 (월)</span>
-          </div>
-          <div class="info-row">
-            <span class="info-label">숙박</span>
-            <span class="info-value">2박</span>
-          </div>
+        <div class="form-group">
+          <label>체크아웃</label>
+          <input type="text" id="accom-checkOut" placeholder="예: 4.18 (토)">
         </div>
-        <div class="accom-highlight">
-          <div style="font-size:13px; color:var(--text-secondary);">
-            기타큐슈 숙소 예약 정보를 추가해주세요
-          </div>
+        <div class="form-group">
+          <label>숙박 (박)</label>
+          <input type="number" id="accom-nights" placeholder="1" min="1">
+        </div>
+        <div class="form-group">
+          <label>예약 사이트</label>
+          <input type="text" id="accom-bookingSite" placeholder="예: Booking.com">
+        </div>
+        <div class="form-group">
+          <label>예약 계정</label>
+          <input type="text" id="accom-bookingAccount" placeholder="예: email@gmail.com">
+        </div>
+        <div class="form-group">
+          <label>예약번호</label>
+          <input type="text" id="accom-bookingRef" placeholder="예약번호">
+        </div>
+        <div class="form-group">
+          <label>PIN 코드</label>
+          <input type="text" id="accom-pinCode" placeholder="PIN 코드 (선택)">
+        </div>
+        <div class="form-group">
+          <label>Google Maps 링크</label>
+          <input type="text" id="accom-mapUrl" placeholder="https://maps.app.goo.gl/...">
+        </div>
+        <div class="form-group">
+          <label>메모</label>
+          <textarea id="accom-memo" placeholder="와이파이, 조식, 짐보관 등"></textarea>
+        </div>
+        <div class="modal-actions">
+          <button class="btn-cancel" onclick="closeAccomModal()">취소</button>
+          <button class="btn-save" onclick="saveAccom()">저장</button>
         </div>
       </div>
     </div>
@@ -1067,6 +1170,158 @@
       document.querySelectorAll('.area-content').forEach(function(content) { content.classList.remove('active'); });
       document.getElementById('area-' + areaId).classList.add('active');
     }
+
+    // 숙소 관리
+    var TRIP_ID_ACCOM = '202604';
+    var ACCOM_API = '/api/accommodations/' + TRIP_ID_ACCOM;
+    var accomData = [];
+
+    function loadAccommodations() {
+      fetch(ACCOM_API)
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          accomData = data;
+          renderAccommodations();
+        })
+        .catch(function() {
+          // API 실패 시 LocalStorage 폴백
+          accomData = JSON.parse(localStorage.getItem('accom_' + TRIP_ID_ACCOM) || '[]');
+          renderAccommodations();
+        });
+    }
+
+    function renderAccommodations() {
+      var list = document.getElementById('accom-list');
+      if (accomData.length === 0) {
+        list.innerHTML = '<div style="text-align:center;padding:40px 20px;color:var(--text-secondary);font-size:14px;">등록된 숙소가 없습니다</div>';
+        return;
+      }
+      var html = '';
+      accomData.forEach(function(a) {
+        html += '<div class="card" style="position:relative;">';
+        html += '<div style="position:absolute;top:12px;right:12px;display:flex;gap:8px;">';
+        html += '<button onclick="editAccom(' + a.id + ')" style="border:none;background:#F0F0F5;border-radius:8px;padding:6px 10px;font-size:12px;cursor:pointer;">수정</button>';
+        html += '<button onclick="deleteAccom(' + a.id + ')" style="border:none;background:#FFEBEE;color:#C62828;border-radius:8px;padding:6px 10px;font-size:12px;cursor:pointer;">삭제</button>';
+        html += '</div>';
+        html += '<div class="card-header"><div class="card-icon" style="background:#E8EAF6;">🏨</div><div>';
+        html += '<div class="card-title">' + escHtml(a.name || '') + '</div>';
+        html += '<div class="card-subtitle">' + escHtml(a.nameKr || '') + (a.area ? ' · ' + escHtml(a.area) : '') + '</div>';
+        html += '</div></div>';
+        html += '<div class="card-body">';
+        if (a.checkIn) html += infoRow('체크인', a.checkIn);
+        if (a.checkOut) html += infoRow('체크아웃', a.checkOut);
+        if (a.nights) html += infoRow('숙박', a.nights + '박');
+        if (a.bookingSite) html += infoRow('예약 사이트', a.bookingSite);
+        if (a.bookingAccount) html += infoRow('예약 계정', a.bookingAccount);
+        if (a.bookingRef) html += infoRow('예약번호', a.bookingRef);
+        if (a.pinCode) html += infoRow('PIN 코드', a.pinCode);
+        html += '</div>';
+        if (a.mapUrl) {
+          html += '<div class="accom-highlight"><a href="' + escHtml(a.mapUrl) + '" target="_blank" class="map-link" style="margin:0;">📍 Google Maps에서 보기</a></div>';
+        }
+        if (a.memo) {
+          html += '<div class="accom-highlight"><div style="font-size:13px;font-weight:600;margin-bottom:4px;">메모</div><div style="font-size:13px;color:var(--text-secondary);">' + escHtml(a.memo) + '</div></div>';
+        }
+        html += '</div>';
+      });
+      list.innerHTML = html;
+    }
+
+    function infoRow(label, value) {
+      return '<div class="info-row"><span class="info-label">' + label + '</span><span class="info-value">' + escHtml(value) + '</span></div>';
+    }
+
+    function escHtml(s) {
+      var d = document.createElement('div');
+      d.textContent = s;
+      return d.innerHTML;
+    }
+
+    function openAccomModal(data) {
+      document.getElementById('accomModalTitle').textContent = data ? '숙소 수정' : '숙소 추가';
+      document.getElementById('accom-edit-id').value = data ? data.id : '';
+      document.getElementById('accom-name').value = data ? data.name || '' : '';
+      document.getElementById('accom-nameKr').value = data ? data.nameKr || '' : '';
+      document.getElementById('accom-area').value = data ? data.area || '' : '';
+      document.getElementById('accom-checkIn').value = data ? data.checkIn || '' : '';
+      document.getElementById('accom-checkOut').value = data ? data.checkOut || '' : '';
+      document.getElementById('accom-nights').value = data ? data.nights || '' : '';
+      document.getElementById('accom-bookingSite').value = data ? data.bookingSite || '' : '';
+      document.getElementById('accom-bookingAccount').value = data ? data.bookingAccount || '' : '';
+      document.getElementById('accom-bookingRef').value = data ? data.bookingRef || '' : '';
+      document.getElementById('accom-pinCode').value = data ? data.pinCode || '' : '';
+      document.getElementById('accom-mapUrl').value = data ? data.mapUrl || '' : '';
+      document.getElementById('accom-memo').value = data ? data.memo || '' : '';
+      document.getElementById('accomModal').classList.add('active');
+    }
+
+    function closeAccomModal() {
+      document.getElementById('accomModal').classList.remove('active');
+    }
+
+    function saveAccom() {
+      var editId = document.getElementById('accom-edit-id').value;
+      var body = {
+        name: document.getElementById('accom-name').value,
+        nameKr: document.getElementById('accom-nameKr').value,
+        area: document.getElementById('accom-area').value,
+        checkIn: document.getElementById('accom-checkIn').value,
+        checkOut: document.getElementById('accom-checkOut').value,
+        nights: parseInt(document.getElementById('accom-nights').value) || 0,
+        bookingSite: document.getElementById('accom-bookingSite').value,
+        bookingAccount: document.getElementById('accom-bookingAccount').value,
+        bookingRef: document.getElementById('accom-bookingRef').value,
+        pinCode: document.getElementById('accom-pinCode').value,
+        mapUrl: document.getElementById('accom-mapUrl').value,
+        memo: document.getElementById('accom-memo').value,
+        sortOrder: accomData.length
+      };
+
+      var url = editId ? '/api/accommodations/' + editId : ACCOM_API;
+      var method = editId ? 'PUT' : 'POST';
+
+      fetch(url, {
+        method: method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      })
+      .then(function(r) { return r.json(); })
+      .then(function() {
+        closeAccomModal();
+        loadAccommodations();
+      })
+      .catch(function() {
+        // API 실패 시 LocalStorage 폴백
+        if (editId) {
+          accomData = accomData.map(function(a) { return a.id == editId ? Object.assign(a, body) : a; });
+        } else {
+          body.id = Date.now();
+          accomData.push(body);
+        }
+        localStorage.setItem('accom_' + TRIP_ID_ACCOM, JSON.stringify(accomData));
+        closeAccomModal();
+        renderAccommodations();
+      });
+    }
+
+    function editAccom(id) {
+      var item = accomData.find(function(a) { return a.id === id; });
+      if (item) openAccomModal(item);
+    }
+
+    function deleteAccom(id) {
+      if (!confirm('숙소를 삭제하시겠습니까?')) return;
+      fetch('/api/accommodations/' + id, { method: 'DELETE' })
+        .then(function() { loadAccommodations(); })
+        .catch(function() {
+          accomData = accomData.filter(function(a) { return a.id !== id; });
+          localStorage.setItem('accom_' + TRIP_ID_ACCOM, JSON.stringify(accomData));
+          renderAccommodations();
+        });
+    }
+
+    // 페이지 로드 시 숙소 데이터 불러오기
+    loadAccommodations();
 
     // 별 즐겨찾기 (API 사용 시 서버, 아니면 LocalStorage 폴백)
     (function() {
