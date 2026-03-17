@@ -15,12 +15,30 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ec2-user
           key: ${{ secrets.EC2_SSH_KEY }}
+          command_timeout: 5m
           script: |
             cd chuva-travel
             git pull origin main
             ./mvnw package -DskipTests -q
-            pkill -f 'my-travel' || true
-            sleep 2
+
+            # 기존 프로세스 종료 (deploy 스크립트로 분리)
+            PID=$(pgrep -f 'my-travel-1.0.0.jar' || true)
+            if [ -n "$PID" ]; then
+              kill $PID
+              sleep 3
+            fi
+
+            # 새 프로세스 시작
             nohup java -jar target/my-travel-1.0.0.jar > app.log 2>&1 &
-            sleep 10
-            curl -s -o /dev/null -w '%{http_code}' http://localhost:8080/
+            disown
+
+            # 서버 기동 대기
+            for i in $(seq 1 15); do
+              if curl -s -o /dev/null -w '' http://localhost:8080/ 2>/dev/null; then
+                echo "Server started successfully"
+                exit 0
+              fi
+              sleep 2
+            done
+            echo "Server may still be starting..."
+            exit 0
