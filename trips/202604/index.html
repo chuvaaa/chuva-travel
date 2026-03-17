@@ -273,7 +273,29 @@
       overflow: hidden;
       margin-bottom: 12px;
       box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+      position: relative;
     }
+
+    .fav-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 36px;
+      height: 36px;
+      border: none;
+      background: rgba(255,255,255,0.85);
+      border-radius: 50%;
+      font-size: 18px;
+      line-height: 36px;
+      text-align: center;
+      cursor: pointer;
+      z-index: 10;
+      -webkit-tap-highlight-color: transparent;
+      transition: transform 0.2s;
+    }
+
+    .fav-btn:active { transform: scale(1.2); }
+    .fav-btn.active { background: #FFF8E1; }
 
     .restaurant-img {
       width: 100%;
@@ -1006,6 +1028,28 @@
       document.querySelectorAll('.area-content').forEach(function(content) { content.classList.remove('active'); });
       document.getElementById('area-' + areaId).classList.add('active');
     }
+
+    // 별 즐겨찾기
+    (function() {
+      var favs = JSON.parse(localStorage.getItem('restaurant_favs') || '{}');
+      var cards = document.querySelectorAll('.restaurant-card');
+      cards.forEach(function(card, i) {
+        var btn = document.createElement('button');
+        btn.className = 'fav-btn' + (favs[i] ? ' active' : '');
+        btn.textContent = favs[i] ? '\u2605' : '\u2606';
+        btn.onclick = function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          favs[i] = !favs[i];
+          btn.textContent = favs[i] ? '\u2605' : '\u2606';
+          btn.style.color = favs[i] ? '#FFB300' : '#999';
+          btn.className = 'fav-btn' + (favs[i] ? ' active' : '');
+          localStorage.setItem('restaurant_favs', JSON.stringify(favs));
+        };
+        btn.style.color = favs[i] ? '#FFB300' : '#999';
+        card.appendChild(btn);
+      });
+    })();
   </script>
 
 </body>
