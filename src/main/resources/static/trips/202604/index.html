@@ -619,12 +619,7 @@
         <input type="hidden" id="sched-insert-after">
         <div class="form-group">
           <label>날짜</label>
-          <select id="sched-date" style="width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:10px;font-size:14px;font-family:inherit;-webkit-appearance:none;background:white;">
-            <option value="2026-04-17">4.17 (금)</option>
-            <option value="2026-04-18">4.18 (토)</option>
-            <option value="2026-04-19">4.19 (일)</option>
-            <option value="2026-04-20">4.20 (월)</option>
-          </select>
+          <input type="date" id="sched-date" style="width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:10px;font-size:14px;font-family:inherit;-webkit-appearance:none;background:white;">
         </div>
         <div class="form-group">
           <label>시간 (선택)</label>
@@ -1186,11 +1181,20 @@
     var DAY_COLORS = ['#FFF3E0','#E8F5E9','#E3F2FD','#F3E5F5','#FFF8E1'];
     var DAY_TEXT_COLORS = ['#E65100','#2E7D32','#1565C0','#7B1FA2','#F57F17'];
     var WEEKDAYS = ['일','월','화','수','목','금','토'];
-    var TRIP_START = new Date('2026-04-17');
+    var dayMap = {};
+
+    function buildDayMap() {
+      dayMap = {};
+      var dates = [];
+      schedData.forEach(function(s) {
+        if (dates.indexOf(s.date) === -1) dates.push(s.date);
+      });
+      dates.sort();
+      dates.forEach(function(d, i) { dayMap[d] = i + 1; });
+    }
 
     function getDayNum(dateStr) {
-      var d = new Date(dateStr);
-      return Math.floor((d - TRIP_START) / 86400000) + 1;
+      return dayMap[dateStr] || 1;
     }
 
     function formatDate(dateStr) {
@@ -1212,6 +1216,7 @@
     }
 
     function renderSchedules() {
+      buildDayMap();
       var list = document.getElementById('schedule-list');
       if (schedData.length === 0) {
         list.innerHTML = '<div style="text-align:center;padding:40px 20px;color:var(--text-secondary);font-size:14px;">등록된 일정이 없습니다</div>';
@@ -1278,7 +1283,7 @@
     function openScheduleModal(data, insertDate, insertSort) {
       document.getElementById('scheduleModalTitle').textContent = data ? '일정 수정' : '일정 추가';
       document.getElementById('sched-edit-id').value = data ? data.id : '';
-      document.getElementById('sched-date').value = data ? data.date : (insertDate || '2026-04-17');
+      document.getElementById('sched-date').value = data ? data.date : (insertDate || new Date().toISOString().slice(0,10));
       document.getElementById('sched-time').value = data ? data.time || '' : '';
       document.getElementById('sched-title').value = data ? data.title || '' : '';
       document.getElementById('sched-subtitle').value = data ? data.subtitle || '' : '';
