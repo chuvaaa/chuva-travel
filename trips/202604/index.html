@@ -298,6 +298,63 @@
     .fav-btn.active { background: #FFF8E1; }
 
     /* Scroll Top Button */
+    /* Schedule insert button */
+    .insert-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 4px;
+      border: none;
+      background: none;
+      cursor: pointer;
+      opacity: 0;
+      transition: opacity 0.2s;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .insert-btn:hover, .insert-btn:active { opacity: 1 !important; }
+
+    .insert-btn .line {
+      flex: 1;
+      height: 1px;
+      background: var(--primary);
+      opacity: 0.3;
+    }
+
+    .insert-btn .plus {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: white;
+      font-size: 16px;
+      line-height: 24px;
+      text-align: center;
+      margin: 0 8px;
+    }
+
+    .schedule-actions {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      display: flex;
+      gap: 6px;
+    }
+
+    .schedule-actions button {
+      border: none;
+      border-radius: 8px;
+      padding: 4px 8px;
+      font-size: 11px;
+      cursor: pointer;
+    }
+
+    .icon-pick.selected {
+      border-color: var(--primary) !important;
+      background: var(--primary-light) !important;
+    }
+
     /* Add Button */
     .add-btn {
       display: block;
@@ -550,104 +607,55 @@
   <!-- Schedule Tab -->
   <div class="content">
     <div id="tab-schedule" class="tab-content active">
+      <div id="schedule-list"></div>
+      <button class="add-btn" onclick="openScheduleModal()">+ 일정 추가</button>
+    </div>
 
-      <div class="section-title">DAY 1 - 4.17 (금)</div>
-      <span class="day-badge day-1">후쿠오카 도착</span>
-      <div class="card">
-        <div class="card-header">
-          <div class="card-icon" style="background:#FFF3E0;">✈️</div>
-          <div>
-            <div class="card-title">인천 → 후쿠오카</div>
-            <div class="card-subtitle">17:00 출발</div>
-          </div>
+    <!-- Schedule Modal -->
+    <div class="modal-overlay" id="scheduleModal">
+      <div class="modal">
+        <div class="modal-title" id="scheduleModalTitle">일정 추가</div>
+        <input type="hidden" id="sched-edit-id">
+        <input type="hidden" id="sched-insert-after">
+        <div class="form-group">
+          <label>날짜</label>
+          <select id="sched-date" style="width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:10px;font-size:14px;font-family:inherit;-webkit-appearance:none;background:white;">
+            <option value="2026-04-17">4.17 (금)</option>
+            <option value="2026-04-18">4.18 (토)</option>
+            <option value="2026-04-19">4.19 (일)</option>
+            <option value="2026-04-20">4.20 (월)</option>
+          </select>
         </div>
-        <div class="card-body">
-          <div class="info-row">
-            <span class="info-label">출발</span>
-            <span class="info-value">인천공항 17:00</span>
-          </div>
-          <div class="info-row">
-            <span class="info-label">도착 후</span>
-            <span class="info-value">Hotel Edge Nakasu 체크인</span>
-          </div>
+        <div class="form-group">
+          <label>시간 (선택)</label>
+          <input type="text" id="sched-time" placeholder="예: 17:00">
         </div>
-      </div>
-
-      <div class="card">
-        <div class="card-header">
-          <div class="card-icon" style="background:#E8F5E9;">🏙️</div>
-          <div>
-            <div class="card-title">후쿠오카 시내 (나카스)</div>
-            <div class="card-subtitle">저녁</div>
-          </div>
+        <div class="form-group">
+          <label>제목</label>
+          <input type="text" id="sched-title" placeholder="예: 인천 → 후쿠오카">
         </div>
-        <div class="card-body">
-          <div class="info-row">
-            <span class="info-label">일정</span>
-            <span class="info-value">추가해주세요</span>
-          </div>
+        <div class="form-group">
+          <label>설명 (선택)</label>
+          <input type="text" id="sched-subtitle" placeholder="예: 진에어 LJ271">
         </div>
-      </div>
-
-      <div class="section-title">DAY 2 - 4.18 (토)</div>
-      <span class="day-badge day-2">기타큐슈</span>
-      <div class="card">
-        <div class="card-header">
-          <div class="card-icon" style="background:#E3F2FD;">🚃</div>
-          <div>
-            <div class="card-title">기타큐슈 이동 & 관광</div>
-            <div class="card-subtitle">종일</div>
+        <div class="form-group">
+          <label>아이콘 (선택)</label>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;">
+            <button type="button" class="icon-pick" onclick="pickIcon(this)" data-icon="✈️" style="font-size:20px;border:2px solid var(--border);border-radius:10px;width:40px;height:40px;background:white;cursor:pointer;">✈️</button>
+            <button type="button" class="icon-pick" onclick="pickIcon(this)" data-icon="🚃" style="font-size:20px;border:2px solid var(--border);border-radius:10px;width:40px;height:40px;background:white;cursor:pointer;">🚃</button>
+            <button type="button" class="icon-pick" onclick="pickIcon(this)" data-icon="🏨" style="font-size:20px;border:2px solid var(--border);border-radius:10px;width:40px;height:40px;background:white;cursor:pointer;">🏨</button>
+            <button type="button" class="icon-pick" onclick="pickIcon(this)" data-icon="🍜" style="font-size:20px;border:2px solid var(--border);border-radius:10px;width:40px;height:40px;background:white;cursor:pointer;">🍜</button>
+            <button type="button" class="icon-pick" onclick="pickIcon(this)" data-icon="🏙️" style="font-size:20px;border:2px solid var(--border);border-radius:10px;width:40px;height:40px;background:white;cursor:pointer;">🏙️</button>
+            <button type="button" class="icon-pick" onclick="pickIcon(this)" data-icon="🗾" style="font-size:20px;border:2px solid var(--border);border-radius:10px;width:40px;height:40px;background:white;cursor:pointer;">🗾</button>
+            <button type="button" class="icon-pick" onclick="pickIcon(this)" data-icon="🛍️" style="font-size:20px;border:2px solid var(--border);border-radius:10px;width:40px;height:40px;background:white;cursor:pointer;">🛍️</button>
+            <button type="button" class="icon-pick" onclick="pickIcon(this)" data-icon="☕" style="font-size:20px;border:2px solid var(--border);border-radius:10px;width:40px;height:40px;background:white;cursor:pointer;">☕</button>
+            <button type="button" class="icon-pick" onclick="pickIcon(this)" data-icon="🎌" style="font-size:20px;border:2px solid var(--border);border-radius:10px;width:40px;height:40px;background:white;cursor:pointer;">🎌</button>
           </div>
+          <input type="hidden" id="sched-icon" value="🗾">
         </div>
-        <div class="card-body">
-          <div class="info-row">
-            <span class="info-label">이동</span>
-            <span class="info-value">후쿠오카 → 기타큐슈 (JR ~1시간)</span>
-          </div>
-          <div class="info-row">
-            <span class="info-label">일정</span>
-            <span class="info-value">추가해주세요</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="section-title">DAY 3 - 4.19 (일)</div>
-      <span class="day-badge day-3">기타큐슈</span>
-      <div class="card">
-        <div class="card-header">
-          <div class="card-icon" style="background:#E3F2FD;">🗾</div>
-          <div>
-            <div class="card-title">기타큐슈 관광</div>
-            <div class="card-subtitle">종일</div>
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="info-row">
-            <span class="info-label">일정</span>
-            <span class="info-value">추가해주세요</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="section-title">DAY 4 - 4.20 (월)</div>
-      <span class="day-badge day-4">귀국</span>
-      <div class="card">
-        <div class="card-header">
-          <div class="card-icon" style="background:#F3E5F5;">✈️</div>
-          <div>
-            <div class="card-title">기타큐슈 → 인천</div>
-            <div class="card-subtitle">18:15 출발</div>
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="info-row">
-            <span class="info-label">출발</span>
-            <span class="info-value">기타큐슈공항 18:15</span>
-          </div>
-          <div class="info-row">
-            <span class="info-label">체크아웃</span>
-            <span class="info-value">시간 미정</span>
-          </div>
+        <div class="modal-actions">
+          <button class="btn-cancel" onclick="closeScheduleModal()">취소</button>
+          <button class="btn-save" onclick="saveSchedule()">저장</button>
         </div>
       </div>
     </div>
@@ -1170,6 +1178,196 @@
       document.querySelectorAll('.area-content').forEach(function(content) { content.classList.remove('active'); });
       document.getElementById('area-' + areaId).classList.add('active');
     }
+
+    // 일정 관리
+    var TRIP_ID_SCHED = '202604';
+    var SCHED_API = '/api/schedules/' + TRIP_ID_SCHED;
+    var schedData = [];
+    var DAY_COLORS = ['#FFF3E0','#E8F5E9','#E3F2FD','#F3E5F5','#FFF8E1'];
+    var DAY_TEXT_COLORS = ['#E65100','#2E7D32','#1565C0','#7B1FA2','#F57F17'];
+    var WEEKDAYS = ['일','월','화','수','목','금','토'];
+    var TRIP_START = new Date('2026-04-17');
+
+    function getDayNum(dateStr) {
+      var d = new Date(dateStr);
+      return Math.floor((d - TRIP_START) / 86400000) + 1;
+    }
+
+    function formatDate(dateStr) {
+      var d = new Date(dateStr);
+      return (d.getMonth()+1) + '.' + d.getDate() + ' (' + WEEKDAYS[d.getDay()] + ')';
+    }
+
+    function loadSchedules() {
+      fetch(SCHED_API)
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          schedData = data;
+          renderSchedules();
+        })
+        .catch(function() {
+          schedData = JSON.parse(localStorage.getItem('sched_' + TRIP_ID_SCHED) || '[]');
+          renderSchedules();
+        });
+    }
+
+    function renderSchedules() {
+      var list = document.getElementById('schedule-list');
+      if (schedData.length === 0) {
+        list.innerHTML = '<div style="text-align:center;padding:40px 20px;color:var(--text-secondary);font-size:14px;">등록된 일정이 없습니다</div>';
+        return;
+      }
+      var html = '';
+      var currentDate = '';
+      var dayCount = 0;
+
+      schedData.forEach(function(s, i) {
+        // DAY 헤더
+        if (s.date !== currentDate) {
+          currentDate = s.date;
+          dayCount = getDayNum(s.date);
+          var ci = (dayCount - 1) % DAY_COLORS.length;
+          html += '<div class="section-title">DAY ' + dayCount + ' - ' + formatDate(s.date) + '</div>';
+        }
+
+        // 일정 카드
+        var ci = (getDayNum(s.date) - 1) % DAY_COLORS.length;
+        html += '<div class="card" style="position:relative;">';
+        html += '<div class="schedule-actions">';
+        html += '<button onclick="editSchedule(' + s.id + ')" style="background:#F0F0F5;">수정</button>';
+        html += '<button onclick="deleteSchedule(' + s.id + ')" style="background:#FFEBEE;color:#C62828;">삭제</button>';
+        html += '</div>';
+        html += '<div class="card-header">';
+        html += '<div class="card-icon" style="background:' + DAY_COLORS[ci] + ';">' + (s.icon || '🗾') + '</div>';
+        html += '<div>';
+        html += '<div class="card-title">' + escHtml(s.title) + '</div>';
+        if (s.time || s.subtitle) {
+          html += '<div class="card-subtitle">';
+          if (s.time) html += s.time;
+          if (s.time && s.subtitle) html += ' · ';
+          if (s.subtitle) html += escHtml(s.subtitle);
+          html += '</div>';
+        }
+        html += '</div></div>';
+        html += '</div>';
+
+        // 일정 사이 삽입 버튼
+        if (i < schedData.length - 1) {
+          var nextSort = schedData[i+1].sortOrder;
+          var curSort = s.sortOrder;
+          var midSort = (curSort + nextSort) / 2;
+          var insertDate = s.date;
+          // 다음 일정이 다른 날이면 삽입 버튼 생략 (DAY 헤더 사이에는 하단 + 버튼 사용)
+          if (schedData[i+1].date === s.date) {
+            html += '<button class="insert-btn" style="opacity:0.3;" onclick="openScheduleModal(null, \'' + insertDate + '\', ' + midSort + ')">';
+            html += '<span class="line"></span><span class="plus">+</span><span class="line"></span>';
+            html += '</button>';
+          }
+        }
+      });
+
+      list.innerHTML = html;
+    }
+
+    function pickIcon(el) {
+      document.querySelectorAll('.icon-pick').forEach(function(b) { b.classList.remove('selected'); });
+      el.classList.add('selected');
+      document.getElementById('sched-icon').value = el.getAttribute('data-icon');
+    }
+
+    function openScheduleModal(data, insertDate, insertSort) {
+      document.getElementById('scheduleModalTitle').textContent = data ? '일정 수정' : '일정 추가';
+      document.getElementById('sched-edit-id').value = data ? data.id : '';
+      document.getElementById('sched-date').value = data ? data.date : (insertDate || '2026-04-17');
+      document.getElementById('sched-time').value = data ? data.time || '' : '';
+      document.getElementById('sched-title').value = data ? data.title || '' : '';
+      document.getElementById('sched-subtitle').value = data ? data.subtitle || '' : '';
+      document.getElementById('sched-icon').value = data ? data.icon || '🗾' : '🗾';
+      document.getElementById('sched-insert-after').value = insertSort != null ? insertSort : '';
+
+      // 아이콘 선택 표시
+      var currentIcon = document.getElementById('sched-icon').value;
+      document.querySelectorAll('.icon-pick').forEach(function(b) {
+        b.classList.toggle('selected', b.getAttribute('data-icon') === currentIcon);
+      });
+
+      document.getElementById('scheduleModal').classList.add('active');
+    }
+
+    function closeScheduleModal() {
+      document.getElementById('scheduleModal').classList.remove('active');
+    }
+
+    function saveSchedule() {
+      var editId = document.getElementById('sched-edit-id').value;
+      var insertSort = document.getElementById('sched-insert-after').value;
+
+      var sortOrder;
+      if (editId) {
+        var existing = schedData.find(function(s) { return s.id == editId; });
+        sortOrder = existing ? existing.sortOrder : schedData.length;
+      } else if (insertSort !== '') {
+        sortOrder = parseFloat(insertSort);
+      } else {
+        // 해당 날짜의 마지막에 추가
+        var date = document.getElementById('sched-date').value;
+        var sameDayItems = schedData.filter(function(s) { return s.date === date; });
+        sortOrder = sameDayItems.length > 0 ? sameDayItems[sameDayItems.length - 1].sortOrder + 1 : 1;
+      }
+
+      var body = {
+        date: document.getElementById('sched-date').value,
+        time: document.getElementById('sched-time').value,
+        title: document.getElementById('sched-title').value,
+        subtitle: document.getElementById('sched-subtitle').value,
+        icon: document.getElementById('sched-icon').value,
+        sortOrder: sortOrder
+      };
+
+      var url = editId ? '/api/schedules/' + editId : SCHED_API;
+      var method = editId ? 'PUT' : 'POST';
+
+      fetch(url, {
+        method: method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      })
+      .then(function(r) { return r.json(); })
+      .then(function() {
+        closeScheduleModal();
+        loadSchedules();
+      })
+      .catch(function() {
+        if (editId) {
+          schedData = schedData.map(function(s) { return s.id == editId ? Object.assign(s, body) : s; });
+        } else {
+          body.id = Date.now();
+          schedData.push(body);
+          schedData.sort(function(a, b) { return a.date === b.date ? a.sortOrder - b.sortOrder : a.date.localeCompare(b.date); });
+        }
+        localStorage.setItem('sched_' + TRIP_ID_SCHED, JSON.stringify(schedData));
+        closeScheduleModal();
+        renderSchedules();
+      });
+    }
+
+    function editSchedule(id) {
+      var item = schedData.find(function(s) { return s.id === id; });
+      if (item) openScheduleModal(item);
+    }
+
+    function deleteSchedule(id) {
+      if (!confirm('일정을 삭제하시겠습니까?')) return;
+      fetch('/api/schedules/' + id, { method: 'DELETE' })
+        .then(function() { loadSchedules(); })
+        .catch(function() {
+          schedData = schedData.filter(function(s) { return s.id !== id; });
+          localStorage.setItem('sched_' + TRIP_ID_SCHED, JSON.stringify(schedData));
+          renderSchedules();
+        });
+    }
+
+    loadSchedules();
 
     // 숙소 관리
     var TRIP_ID_ACCOM = '202604';
