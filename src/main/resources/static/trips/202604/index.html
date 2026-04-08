@@ -583,6 +583,139 @@
       border-radius: 0 12px 12px 0;
       margin-top: 8px;
     }
+
+    /* Accordion */
+    .accordion-group { margin-bottom: 4px; }
+
+    .accordion-header {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin: 12px 0 0;
+      padding: 10px 12px;
+      background: var(--card);
+      border-radius: 12px;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      transition: background 0.2s;
+    }
+
+    .accordion-header:active { background: #F0F0F5; }
+
+    .accordion-chevron {
+      font-size: 10px;
+      transition: transform 0.3s ease;
+      flex-shrink: 0;
+    }
+
+    .accordion-group.open .accordion-chevron {
+      transform: rotate(90deg);
+    }
+
+    .accordion-count {
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--text-secondary);
+      opacity: 0.7;
+      margin-left: 2px;
+    }
+
+    .accordion-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease;
+    }
+
+    .accordion-group.open .accordion-body {
+      max-height: 5000px;
+    }
+
+    .accordion-body-inner {
+      padding-top: 8px;
+    }
+
+    /* Floating Add Restaurant Button */
+    .fab-add-restaurant {
+      position: fixed;
+      bottom: 76px;
+      right: 16px;
+      width: 44px;
+      height: 44px;
+      border: none;
+      background: var(--primary);
+      color: white;
+      border-radius: 50%;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      font-size: 24px;
+      line-height: 44px;
+      text-align: center;
+      cursor: pointer;
+      z-index: 200;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      -webkit-tap-highlight-color: transparent;
+      transition: transform 0.2s;
+    }
+
+    .fab-add-restaurant:active { transform: scale(0.9); }
+
+    /* Restaurant Modal - choice buttons */
+    .modal-choice-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .modal-choice-btn {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: var(--card);
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--text);
+      transition: background 0.15s;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .modal-choice-btn:active { background: #F0F0F5; }
+
+    .modal-choice-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    .form-group select {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 14px;
+      font-family: inherit;
+      -webkit-appearance: none;
+      background: white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236E6E73' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") no-repeat right 12px center;
+      background-size: 12px;
+    }
+
+    .form-group select:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
   </style>
 </head>
 <body>
@@ -823,335 +956,506 @@
       <!-- Fukuoka Restaurants -->
       <div id="area-fukuoka" class="area-content active">
 
-        <div class="restaurant-card">
-          <div class="restaurant-img" style="background:linear-gradient(135deg,#ff9a56,#ff6b6b);">
-            사진을 추가하세요
+        <div class="accordion-group" data-category="라멘">
+          <div class="accordion-header" onclick="toggleAccordion(this)">
+            <span class="accordion-chevron">&#9654;</span>
+            <span>🍜 라멘</span>
+            <span class="accordion-count"></span>
           </div>
-          <div class="restaurant-info">
-            <div class="restaurant-name">식당명 입력 (예시)</div>
-            <div class="restaurant-meta">
-              <span class="rating">★★★★☆</span> · 하카타구
+          <div class="accordion-body"><div class="accordion-body-inner">
+            <div class="restaurant-card" data-hardcoded="true">
+              <div class="restaurant-img" style="background:linear-gradient(135deg,#ff9a56,#ff6b6b);">
+                사진을 추가하세요
+              </div>
+              <div class="restaurant-info">
+                <div class="restaurant-name">식당명 입력 (예시)</div>
+                <div class="restaurant-meta">
+                  <span class="rating">★★★★☆</span> · 하카타구
+                </div>
+                <div class="restaurant-tags">
+                  <span class="tag tag-ramen">라멘</span>
+                </div>
+                <a href="#" class="map-link">📍 지도 보기</a>
+              </div>
             </div>
-            <div class="restaurant-tags">
-              <span class="tag tag-ramen">라멘</span>
-            </div>
-            <a href="#" class="map-link">📍 지도 보기</a>
-          </div>
+          </div></div>
         </div>
 
-        <div class="restaurant-card">
-          <div class="restaurant-img" style="background:linear-gradient(135deg,#a18cd1,#fbc2eb);">
-            사진을 추가하세요
+        <div class="accordion-group" data-category="이자카야">
+          <div class="accordion-header" onclick="toggleAccordion(this)">
+            <span class="accordion-chevron">&#9654;</span>
+            <span>🍶 이자카야</span>
+            <span class="accordion-count"></span>
           </div>
-          <div class="restaurant-info">
-            <div class="restaurant-name">식당명 입력 (예시)</div>
-            <div class="restaurant-meta">
-              <span class="rating">★★★★★</span> · 텐진
+          <div class="accordion-body"><div class="accordion-body-inner">
+            <div class="restaurant-card" data-hardcoded="true">
+              <div class="restaurant-img" style="background:linear-gradient(135deg,#a18cd1,#fbc2eb);">
+                사진을 추가하세요
+              </div>
+              <div class="restaurant-info">
+                <div class="restaurant-name">식당명 입력 (예시)</div>
+                <div class="restaurant-meta">
+                  <span class="rating">★★★★★</span> · 텐진
+                </div>
+                <div class="restaurant-tags">
+                  <span class="tag tag-izakaya">이자카야</span>
+                  <span class="tag tag-seafood">해산물</span>
+                </div>
+                <a href="#" class="map-link">📍 지도 보기</a>
+              </div>
             </div>
-            <div class="restaurant-tags">
-              <span class="tag tag-izakaya">이자카야</span>
-              <span class="tag tag-seafood">해산물</span>
-            </div>
-            <a href="#" class="map-link">📍 지도 보기</a>
-          </div>
+          </div></div>
         </div>
 
-        <div class="empty-state" style="padding:20px;">
-          <p style="font-size:13px; color:var(--text-secondary);">+ 식당을 추가하세요</p>
-        </div>
+        <div id="fukuoka-dynamic-categories"></div>
+
       </div>
 
       <!-- Kitakyushu Restaurants -->
       <div id="area-kitakyushu" class="area-content">
 
         <!-- Category: Ramen -->
-        <div style="font-size:13px;font-weight:600;color:var(--text-secondary);margin:16px 0 8px;padding-left:4px;">🍜 라멘</div>
-
-        <div class="restaurant-card">
-          <div class="restaurant-info">
-            <div class="restaurant-name">ぎょらん亭 魚町店 (ai추천)</div>
-            <div class="restaurant-meta">교란테이 우오마치점 · 우오마치</div>
-            <div class="restaurant-meta">돈코츠 라멘 전문. 타베로그 라멘 서일본 Top 100 선정</div>
-            <div class="restaurant-tags">
-              <span class="tag tag-ramen">라멘</span>
-              <span class="tag" style="background:#E8F5E9;color:#2E7D32;">저렴</span>
-            </div>
-            <a href="https://www.google.com/maps/search/ぎょらん亭+魚町店+北九州市" target="_blank" class="map-link">📍 지도 보기</a>
+        <div class="accordion-group" data-category="라멘">
+          <div class="accordion-header" onclick="toggleAccordion(this)">
+            <span class="accordion-chevron">&#9654;</span>
+            <span>🍜 라멘</span>
+            <span class="accordion-count"></span>
           </div>
-        </div>
+          <div class="accordion-body"><div class="accordion-body-inner">
 
-        <div class="restaurant-card">
-          <div class="restaurant-info">
-            <div class="restaurant-name">さるたひこ (ai추천)</div>
-            <div class="restaurant-meta">사루타히코 · 교마치</div>
-            <div class="restaurant-meta">츠케멘, 마제소바 인기. 코쿠라역 도보 5분</div>
-            <div class="restaurant-tags">
-              <span class="tag tag-ramen">라멘</span>
-              <span class="tag" style="background:#E8F5E9;color:#2E7D32;">저렴</span>
+            <div class="restaurant-card" data-hardcoded="true">
+              <div class="restaurant-info">
+                <div class="restaurant-name">ぎょらん亭 魚町店 (ai추천)</div>
+                <div class="restaurant-meta">교란테이 우오마치점 · 우오마치</div>
+                <div class="restaurant-meta">돈코츠 라멘 전문. 타베로그 라멘 서일본 Top 100 선정</div>
+                <div class="restaurant-tags">
+                  <span class="tag tag-ramen">라멘</span>
+                  <span class="tag" style="background:#E8F5E9;color:#2E7D32;">저렴</span>
+                </div>
+                <a href="https://www.google.com/maps/search/ぎょらん亭+魚町店+北九州市" target="_blank" class="map-link">📍 지도 보기</a>
+              </div>
             </div>
-            <a href="https://www.google.com/maps/search/さるたひこ+北九州市小倉北区京町" target="_blank" class="map-link">📍 지도 보기</a>
-          </div>
-        </div>
 
-        <div class="restaurant-card">
-          <div class="restaurant-info">
-            <div class="restaurant-name">博多らーめん Shin-Shin 小倉店 (ai추천)</div>
-            <div class="restaurant-meta">하카타 라멘 신신 · 코쿠라역 AMU Plaza 내</div>
-            <div class="restaurant-meta">하카타식 돈코츠. 코쿠라역 직결 접근성 최고</div>
-            <div class="restaurant-tags">
-              <span class="tag tag-ramen">라멘</span>
-              <span class="tag" style="background:#E8F5E9;color:#2E7D32;">저렴</span>
+            <div class="restaurant-card" data-hardcoded="true">
+              <div class="restaurant-info">
+                <div class="restaurant-name">さるたひこ (ai추천)</div>
+                <div class="restaurant-meta">사루타히코 · 교마치</div>
+                <div class="restaurant-meta">츠케멘, 마제소바 인기. 코쿠라역 도보 5분</div>
+                <div class="restaurant-tags">
+                  <span class="tag tag-ramen">라멘</span>
+                  <span class="tag" style="background:#E8F5E9;color:#2E7D32;">저렴</span>
+                </div>
+                <a href="https://www.google.com/maps/search/さるたひこ+北九州市小倉北区京町" target="_blank" class="map-link">📍 지도 보기</a>
+              </div>
             </div>
-            <a href="https://www.google.com/maps/search/Shin-Shin+AMU+Plaza+小倉" target="_blank" class="map-link">📍 지도 보기</a>
-          </div>
-        </div>
 
-        <div class="restaurant-card">
-          <div class="restaurant-info">
-            <div class="restaurant-name">丸和前ラーメン (ai추천)</div>
-            <div class="restaurant-meta">마루와마에 라멘 · 탄가</div>
-            <div class="restaurant-meta">라멘+오뎅+바 조합. 심야 영업, 현지인 인기</div>
-            <div class="restaurant-tags">
-              <span class="tag tag-ramen">라멘</span>
-              <span class="tag tag-izakaya">오뎅바</span>
-              <span class="tag" style="background:#FFF8E1;color:#F57F17;">보통</span>
+            <div class="restaurant-card" data-hardcoded="true">
+              <div class="restaurant-info">
+                <div class="restaurant-name">博多らーめん Shin-Shin 小倉店 (ai추천)</div>
+                <div class="restaurant-meta">하카타 라멘 신신 · 코쿠라역 AMU Plaza 내</div>
+                <div class="restaurant-meta">하카타식 돈코츠. 코쿠라역 직결 접근성 최고</div>
+                <div class="restaurant-tags">
+                  <span class="tag tag-ramen">라멘</span>
+                  <span class="tag" style="background:#E8F5E9;color:#2E7D32;">저렴</span>
+                </div>
+                <a href="https://www.google.com/maps/search/Shin-Shin+AMU+Plaza+小倉" target="_blank" class="map-link">📍 지도 보기</a>
+              </div>
             </div>
-            <a href="https://www.google.com/maps/search/丸和前ラーメン+北九州市小倉北区" target="_blank" class="map-link">📍 지도 보기</a>
-          </div>
+
+            <div class="restaurant-card" data-hardcoded="true">
+              <div class="restaurant-info">
+                <div class="restaurant-name">丸和前ラーメン (ai추천)</div>
+                <div class="restaurant-meta">마루와마에 라멘 · 탄가</div>
+                <div class="restaurant-meta">라멘+오뎅+바 조합. 심야 영업, 현지인 인기</div>
+                <div class="restaurant-tags">
+                  <span class="tag tag-ramen">라멘</span>
+                  <span class="tag tag-izakaya">오뎅바</span>
+                  <span class="tag" style="background:#FFF8E1;color:#F57F17;">보통</span>
+                </div>
+                <a href="https://www.google.com/maps/search/丸和前ラーメン+北九州市小倉北区" target="_blank" class="map-link">📍 지도 보기</a>
+              </div>
+            </div>
+
+          </div></div>
         </div>
 
         <!-- Category: Sushi -->
-        <div style="font-size:13px;font-weight:600;color:var(--text-secondary);margin:20px 0 8px;padding-left:4px;">🍣 스시</div>
-
-        <div class="restaurant-card">
-          <div class="restaurant-info">
-            <div class="restaurant-name">寿司 塚本 (ai추천)</div>
-            <div class="restaurant-meta">스시 츠카모토 · 헤이와도리</div>
-            <div class="restaurant-meta">코쿠라 최고 평점 스시. 오마카세, 예약 필수</div>
-            <div class="restaurant-tags">
-              <span class="tag tag-sushi">스시</span>
-              <span class="tag" style="background:#FFEBEE;color:#B71C1C;">고급</span>
-            </div>
-            <a href="https://www.google.com/maps/search/寿司+塚本+北九州市小倉北区" target="_blank" class="map-link">📍 지도 보기</a>
+        <div class="accordion-group" data-category="스시">
+          <div class="accordion-header" onclick="toggleAccordion(this)">
+            <span class="accordion-chevron">&#9654;</span>
+            <span>🍣 스시</span>
+            <span class="accordion-count"></span>
           </div>
-        </div>
+          <div class="accordion-body"><div class="accordion-body-inner">
 
-        <div class="restaurant-card">
-          <div class="restaurant-info">
-            <div class="restaurant-name">小倉 鮨 松本 (ai추천)</div>
-            <div class="restaurant-meta">코쿠라 스시 마츠모토 · 헤이와도리</div>
-            <div class="restaurant-meta">미슐랭 추천 오마카세. 런치 ¥4,000~</div>
-            <div class="restaurant-tags">
-              <span class="tag tag-sushi">스시</span>
-              <span class="tag" style="background:#FFEBEE;color:#B71C1C;">고급</span>
+            <div class="restaurant-card" data-hardcoded="true">
+              <div class="restaurant-info">
+                <div class="restaurant-name">寿司 塚本 (ai추천)</div>
+                <div class="restaurant-meta">스시 츠카모토 · 헤이와도리</div>
+                <div class="restaurant-meta">코쿠라 최고 평점 스시. 오마카세, 예약 필수</div>
+                <div class="restaurant-tags">
+                  <span class="tag tag-sushi">스시</span>
+                  <span class="tag" style="background:#FFEBEE;color:#B71C1C;">고급</span>
+                </div>
+                <a href="https://www.google.com/maps/search/寿司+塚本+北九州市小倉北区" target="_blank" class="map-link">📍 지도 보기</a>
+              </div>
             </div>
-            <a href="https://www.google.com/maps/search/小倉+鮨+松本+北九州市" target="_blank" class="map-link">📍 지도 보기</a>
-          </div>
-        </div>
 
-        <div class="restaurant-card">
-          <div class="restaurant-info">
-            <div class="restaurant-name">青空酒場 マグロの木腹屋 (ai추천)</div>
-            <div class="restaurant-meta">아오조라 사카바 마구로노 키바라야 · 코쿠라역 앞</div>
-            <div class="restaurant-meta">참치 해체쇼 + 다양한 부위 즐기기. 이자카야 분위기</div>
-            <div class="restaurant-tags">
-              <span class="tag tag-sushi">스시</span>
-              <span class="tag tag-seafood">해산물</span>
-              <span class="tag" style="background:#FFF8E1;color:#F57F17;">보통</span>
+            <div class="restaurant-card" data-hardcoded="true">
+              <div class="restaurant-info">
+                <div class="restaurant-name">小倉 鮨 松本 (ai추천)</div>
+                <div class="restaurant-meta">코쿠라 스시 마츠모토 · 헤이와도리</div>
+                <div class="restaurant-meta">미슐랭 추천 오마카세. 런치 ¥4,000~</div>
+                <div class="restaurant-tags">
+                  <span class="tag tag-sushi">스시</span>
+                  <span class="tag" style="background:#FFEBEE;color:#B71C1C;">고급</span>
+                </div>
+                <a href="https://www.google.com/maps/search/小倉+鮨+松本+北九州市" target="_blank" class="map-link">📍 지도 보기</a>
+              </div>
             </div>
-            <a href="https://www.google.com/maps/search/青空酒場+マグロの木腹屋+小倉駅" target="_blank" class="map-link">📍 지도 보기</a>
-          </div>
+
+            <div class="restaurant-card" data-hardcoded="true">
+              <div class="restaurant-info">
+                <div class="restaurant-name">青空酒場 マグロの木腹屋 (ai추천)</div>
+                <div class="restaurant-meta">아오조라 사카바 마구로노 키바라야 · 코쿠라역 앞</div>
+                <div class="restaurant-meta">참치 해체쇼 + 다양한 부위 즐기기. 이자카야 분위기</div>
+                <div class="restaurant-tags">
+                  <span class="tag tag-sushi">스시</span>
+                  <span class="tag tag-seafood">해산물</span>
+                  <span class="tag" style="background:#FFF8E1;color:#F57F17;">보통</span>
+                </div>
+                <a href="https://www.google.com/maps/search/青空酒場+マグロの木腹屋+小倉駅" target="_blank" class="map-link">📍 지도 보기</a>
+              </div>
+            </div>
+
+          </div></div>
         </div>
 
         <!-- Category: Izakaya -->
-        <div style="font-size:13px;font-weight:600;color:var(--text-secondary);margin:20px 0 8px;padding-left:4px;">🍶 이자카야</div>
-
-        <div class="restaurant-card">
-          <div class="restaurant-info">
-            <div class="restaurant-name">味楽 京町本店 (ai추천)</div>
-            <div class="restaurant-meta">미라쿠 교마치 본점 · 교마치</div>
-            <div class="restaurant-meta">활어회, 활오징어 전문. 현지 프리미엄 해산물</div>
-            <div class="restaurant-tags">
-              <span class="tag tag-izakaya">이자카야</span>
-              <span class="tag tag-seafood">해산물</span>
-              <span class="tag" style="background:#FFEBEE;color:#B71C1C;">고급</span>
-            </div>
-            <a href="https://www.google.com/maps/search/味楽+京町本店+北九州市小倉北区" target="_blank" class="map-link">📍 지도 보기</a>
+        <div class="accordion-group" data-category="이자카야">
+          <div class="accordion-header" onclick="toggleAccordion(this)">
+            <span class="accordion-chevron">&#9654;</span>
+            <span>🍶 이자카야</span>
+            <span class="accordion-count"></span>
           </div>
-        </div>
+          <div class="accordion-body"><div class="accordion-body-inner">
 
-        <div class="restaurant-card">
-          <div class="restaurant-info">
-            <div class="restaurant-name">旬工房 くら (ai추천)</div>
-            <div class="restaurant-meta">슌코보 쿠라 · 코쿠라키타구</div>
-            <div class="restaurant-meta">고마사바(참깨절임 고등어), 모츠나베 유명</div>
-            <div class="restaurant-tags">
-              <span class="tag tag-izakaya">이자카야</span>
-              <span class="tag" style="background:#FFF8E1;color:#F57F17;">보통</span>
+            <div class="restaurant-card" data-hardcoded="true">
+              <div class="restaurant-info">
+                <div class="restaurant-name">味楽 京町本店 (ai추천)</div>
+                <div class="restaurant-meta">미라쿠 교마치 본점 · 교마치</div>
+                <div class="restaurant-meta">활어회, 활오징어 전문. 현지 프리미엄 해산물</div>
+                <div class="restaurant-tags">
+                  <span class="tag tag-izakaya">이자카야</span>
+                  <span class="tag tag-seafood">해산물</span>
+                  <span class="tag" style="background:#FFEBEE;color:#B71C1C;">고급</span>
+                </div>
+                <a href="https://www.google.com/maps/search/味楽+京町本店+北九州市小倉北区" target="_blank" class="map-link">📍 지도 보기</a>
+              </div>
             </div>
-            <a href="https://www.google.com/maps/search/旬工房くら+北九州市小倉北区" target="_blank" class="map-link">📍 지도 보기</a>
-          </div>
-        </div>
 
-        <div class="restaurant-card">
-          <div class="restaurant-info">
-            <div class="restaurant-name">炉ばた あお季 (ai추천)</div>
-            <div class="restaurant-meta">로바타 아오키 · 코쿠라키타구</div>
-            <div class="restaurant-meta">로바타야키(화로구이). 활새우, 짚불 가다랑어 타타키</div>
-            <div class="restaurant-tags">
-              <span class="tag tag-izakaya">이자카야</span>
-              <span class="tag" style="background:#FFEBEE;color:#B71C1C;">고급</span>
+            <div class="restaurant-card" data-hardcoded="true">
+              <div class="restaurant-info">
+                <div class="restaurant-name">旬工房 くら (ai추천)</div>
+                <div class="restaurant-meta">슌코보 쿠라 · 코쿠라키타구</div>
+                <div class="restaurant-meta">고마사바(참깨절임 고등어), 모츠나베 유명</div>
+                <div class="restaurant-tags">
+                  <span class="tag tag-izakaya">이자카야</span>
+                  <span class="tag" style="background:#FFF8E1;color:#F57F17;">보통</span>
+                </div>
+                <a href="https://www.google.com/maps/search/旬工房くら+北九州市小倉北区" target="_blank" class="map-link">📍 지도 보기</a>
+              </div>
             </div>
-            <a href="https://www.google.com/maps/search/炉ばた+あお季+北九州市小倉北区" target="_blank" class="map-link">📍 지도 보기</a>
-          </div>
-        </div>
 
-        <div class="restaurant-card">
-          <div class="restaurant-info">
-            <div class="restaurant-name">酒房 武蔵 (ai추천)</div>
-            <div class="restaurant-meta">사카보 무사시 · 코쿠라역 부근</div>
-            <div class="restaurant-meta">꼬치카츠 ¥280~. 가성비 좋은 서민 이자카야</div>
-            <div class="restaurant-tags">
-              <span class="tag tag-izakaya">이자카야</span>
-              <span class="tag" style="background:#E8F5E9;color:#2E7D32;">저렴</span>
+            <div class="restaurant-card" data-hardcoded="true">
+              <div class="restaurant-info">
+                <div class="restaurant-name">炉ばた あお季 (ai추천)</div>
+                <div class="restaurant-meta">로바타 아오키 · 코쿠라키타구</div>
+                <div class="restaurant-meta">로바타야키(화로구이). 활새우, 짚불 가다랑어 타타키</div>
+                <div class="restaurant-tags">
+                  <span class="tag tag-izakaya">이자카야</span>
+                  <span class="tag" style="background:#FFEBEE;color:#B71C1C;">고급</span>
+                </div>
+                <a href="https://www.google.com/maps/search/炉ばた+あお季+北九州市小倉北区" target="_blank" class="map-link">📍 지도 보기</a>
+              </div>
             </div>
-            <a href="https://www.google.com/maps/search/酒房武蔵+北九州市小倉北区" target="_blank" class="map-link">📍 지도 보기</a>
-          </div>
-        </div>
 
-        <div class="restaurant-card">
-          <div class="restaurant-info">
-            <div class="restaurant-name">さかな市場 小倉魚町店 (ai추천)</div>
-            <div class="restaurant-meta">사카나이치바 우오마치점 · 우오마치</div>
-            <div class="restaurant-meta">활오징어 직송. 신선 해산물 이자카야</div>
-            <div class="restaurant-tags">
-              <span class="tag tag-izakaya">이자카야</span>
-              <span class="tag tag-seafood">해산물</span>
-              <span class="tag" style="background:#FFF8E1;color:#F57F17;">보통</span>
+            <div class="restaurant-card" data-hardcoded="true">
+              <div class="restaurant-info">
+                <div class="restaurant-name">酒房 武蔵 (ai추천)</div>
+                <div class="restaurant-meta">사카보 무사시 · 코쿠라역 부근</div>
+                <div class="restaurant-meta">꼬치카츠 ¥280~. 가성비 좋은 서민 이자카야</div>
+                <div class="restaurant-tags">
+                  <span class="tag tag-izakaya">이자카야</span>
+                  <span class="tag" style="background:#E8F5E9;color:#2E7D32;">저렴</span>
+                </div>
+                <a href="https://www.google.com/maps/search/酒房武蔵+北九州市小倉北区" target="_blank" class="map-link">📍 지도 보기</a>
+              </div>
             </div>
-            <a href="https://www.google.com/maps/search/さかな市場+小倉魚町店+北九州市" target="_blank" class="map-link">📍 지도 보기</a>
-          </div>
+
+            <div class="restaurant-card" data-hardcoded="true">
+              <div class="restaurant-info">
+                <div class="restaurant-name">さかな市場 小倉魚町店 (ai추천)</div>
+                <div class="restaurant-meta">사카나이치바 우오마치점 · 우오마치</div>
+                <div class="restaurant-meta">활오징어 직송. 신선 해산물 이자카야</div>
+                <div class="restaurant-tags">
+                  <span class="tag tag-izakaya">이자카야</span>
+                  <span class="tag tag-seafood">해산물</span>
+                  <span class="tag" style="background:#FFF8E1;color:#F57F17;">보통</span>
+                </div>
+                <a href="https://www.google.com/maps/search/さかな市場+小倉魚町店+北九州市" target="_blank" class="map-link">📍 지도 보기</a>
+              </div>
+            </div>
+
+          </div></div>
         </div>
 
         <!-- Category: Yakitori -->
-        <div style="font-size:13px;font-weight:600;color:var(--text-secondary);margin:20px 0 8px;padding-left:4px;">🍗 야키토리</div>
-
-        <div class="restaurant-card">
-          <div class="restaurant-info">
-            <div class="restaurant-name">板前焼とり 成海 (ai추천)</div>
-            <div class="restaurant-meta">이타마에야키토리 나루미 · 탄가</div>
-            <div class="restaurant-meta">프리미엄 숯불 야키토리. 카이세키급 프레젠테이션</div>
-            <div class="restaurant-tags">
-              <span class="tag tag-yakitori">야키토리</span>
-              <span class="tag" style="background:#FFEBEE;color:#B71C1C;">고급</span>
-            </div>
-            <a href="https://www.google.com/maps/search/板前焼とり+成海+北九州市小倉北区" target="_blank" class="map-link">📍 지도 보기</a>
+        <div class="accordion-group" data-category="야키토리">
+          <div class="accordion-header" onclick="toggleAccordion(this)">
+            <span class="accordion-chevron">&#9654;</span>
+            <span>🍗 야키토리</span>
+            <span class="accordion-count"></span>
           </div>
-        </div>
+          <div class="accordion-body"><div class="accordion-body-inner">
 
-        <div class="restaurant-card">
-          <div class="restaurant-info">
-            <div class="restaurant-name">焼とり 八ちゃん (ai추천)</div>
-            <div class="restaurant-meta">야키토리 핫찬 · 코쿠라역 앞</div>
-            <div class="restaurant-meta">꼬치 전품 ¥88! 테바사키(닭날개) 인기</div>
-            <div class="restaurant-tags">
-              <span class="tag tag-yakitori">야키토리</span>
-              <span class="tag" style="background:#E8F5E9;color:#2E7D32;">저렴</span>
+            <div class="restaurant-card" data-hardcoded="true">
+              <div class="restaurant-info">
+                <div class="restaurant-name">板前焼とり 成海 (ai추천)</div>
+                <div class="restaurant-meta">이타마에야키토리 나루미 · 탄가</div>
+                <div class="restaurant-meta">프리미엄 숯불 야키토리. 카이세키급 프레젠테이션</div>
+                <div class="restaurant-tags">
+                  <span class="tag tag-yakitori">야키토리</span>
+                  <span class="tag" style="background:#FFEBEE;color:#B71C1C;">고급</span>
+                </div>
+                <a href="https://www.google.com/maps/search/板前焼とり+成海+北九州市小倉北区" target="_blank" class="map-link">📍 지도 보기</a>
+              </div>
             </div>
-            <a href="https://www.google.com/maps/search/焼とり八ちゃん+北九州市小倉北区" target="_blank" class="map-link">📍 지도 보기</a>
-          </div>
-        </div>
 
-        <div class="restaurant-card">
-          <div class="restaurant-info">
-            <div class="restaurant-name">好起 よしき (ai추천)</div>
-            <div class="restaurant-meta">요시키 · 교마치</div>
-            <div class="restaurant-meta">타레 꼬치 & 삼겹살 구이. 오래된 단골 맛집</div>
-            <div class="restaurant-tags">
-              <span class="tag tag-yakitori">야키토리</span>
-              <span class="tag" style="background:#FFF8E1;color:#F57F17;">보통</span>
+            <div class="restaurant-card" data-hardcoded="true">
+              <div class="restaurant-info">
+                <div class="restaurant-name">焼とり 八ちゃん (ai추천)</div>
+                <div class="restaurant-meta">야키토리 핫찬 · 코쿠라역 앞</div>
+                <div class="restaurant-meta">꼬치 전품 ¥88! 테바사키(닭날개) 인기</div>
+                <div class="restaurant-tags">
+                  <span class="tag tag-yakitori">야키토리</span>
+                  <span class="tag" style="background:#E8F5E9;color:#2E7D32;">저렴</span>
+                </div>
+                <a href="https://www.google.com/maps/search/焼とり八ちゃん+北九州市小倉北区" target="_blank" class="map-link">📍 지도 보기</a>
+              </div>
             </div>
-            <a href="https://www.google.com/maps/search/好起+よしき+北九州市小倉北区京町" target="_blank" class="map-link">📍 지도 보기</a>
-          </div>
+
+            <div class="restaurant-card" data-hardcoded="true">
+              <div class="restaurant-info">
+                <div class="restaurant-name">好起 よしき (ai추천)</div>
+                <div class="restaurant-meta">요시키 · 교마치</div>
+                <div class="restaurant-meta">타레 꼬치 & 삼겹살 구이. 오래된 단골 맛집</div>
+                <div class="restaurant-tags">
+                  <span class="tag tag-yakitori">야키토리</span>
+                  <span class="tag" style="background:#FFF8E1;color:#F57F17;">보통</span>
+                </div>
+                <a href="https://www.google.com/maps/search/好起+よしき+北九州市小倉北区京町" target="_blank" class="map-link">📍 지도 보기</a>
+              </div>
+            </div>
+
+          </div></div>
         </div>
 
         <!-- Category: Udon / Yaki-udon -->
-        <div style="font-size:13px;font-weight:600;color:var(--text-secondary);margin:20px 0 8px;padding-left:4px;">🍲 우동 · 야키우동 (코쿠라 명물)</div>
-
-        <div class="restaurant-card">
-          <div class="restaurant-info">
-            <div class="restaurant-name">だるま堂 (ai추천)</div>
-            <div class="restaurant-meta">다루마도 · 헤이와도리 / 이즈츠야 백화점 내</div>
-            <div class="restaurant-meta">1945년 야키우동 원조 발상지! 건면 사용이 특징</div>
-            <div class="restaurant-tags">
-              <span class="tag tag-udon">야키우동</span>
-              <span class="tag" style="background:#E8F5E9;color:#2E7D32;">저렴</span>
-            </div>
-            <a href="https://www.google.com/maps/search/だるま堂+小倉+井筒屋+北九州市" target="_blank" class="map-link">📍 지도 보기</a>
+        <div class="accordion-group" data-category="우동·야키우동">
+          <div class="accordion-header" onclick="toggleAccordion(this)">
+            <span class="accordion-chevron">&#9654;</span>
+            <span>🍲 우동 · 야키우동 (코쿠라 명물)</span>
+            <span class="accordion-count"></span>
           </div>
-        </div>
+          <div class="accordion-body"><div class="accordion-body-inner">
 
-        <div class="restaurant-card">
-          <div class="restaurant-info">
-            <div class="restaurant-name">旦過うどん (ai추천)</div>
-            <div class="restaurant-meta">탄가 우동 · 탄가시장 내</div>
-            <div class="restaurant-meta">탄가시장 안 수타 우동. 우엉튀김 우동 추천</div>
-            <div class="restaurant-tags">
-              <span class="tag tag-udon">우동</span>
-              <span class="tag" style="background:#E8F5E9;color:#2E7D32;">저렴</span>
+            <div class="restaurant-card" data-hardcoded="true">
+              <div class="restaurant-info">
+                <div class="restaurant-name">だるま堂 (ai추천)</div>
+                <div class="restaurant-meta">다루마도 · 헤이와도리 / 이즈츠야 백화점 내</div>
+                <div class="restaurant-meta">1945년 야키우동 원조 발상지! 건면 사용이 특징</div>
+                <div class="restaurant-tags">
+                  <span class="tag tag-udon">야키우동</span>
+                  <span class="tag" style="background:#E8F5E9;color:#2E7D32;">저렴</span>
+                </div>
+                <a href="https://www.google.com/maps/search/だるま堂+小倉+井筒屋+北九州市" target="_blank" class="map-link">📍 지도 보기</a>
+              </div>
             </div>
-            <a href="https://www.google.com/maps/search/旦過うどん+北九州市小倉北区" target="_blank" class="map-link">📍 지도 보기</a>
-          </div>
+
+            <div class="restaurant-card" data-hardcoded="true">
+              <div class="restaurant-info">
+                <div class="restaurant-name">旦過うどん (ai추천)</div>
+                <div class="restaurant-meta">탄가 우동 · 탄가시장 내</div>
+                <div class="restaurant-meta">탄가시장 안 수타 우동. 우엉튀김 우동 추천</div>
+                <div class="restaurant-tags">
+                  <span class="tag tag-udon">우동</span>
+                  <span class="tag" style="background:#E8F5E9;color:#2E7D32;">저렴</span>
+                </div>
+                <a href="https://www.google.com/maps/search/旦過うどん+北九州市小倉北区" target="_blank" class="map-link">📍 지도 보기</a>
+              </div>
+            </div>
+
+          </div></div>
         </div>
 
         <!-- Category: Yakiniku -->
-        <div style="font-size:13px;font-weight:600;color:var(--text-secondary);margin:20px 0 8px;padding-left:4px;">🥩 야키니쿠</div>
-
-        <div class="restaurant-card">
-          <div class="restaurant-info">
-            <div class="restaurant-name">肉処 天穂 (ai추천)</div>
-            <div class="restaurant-meta">니쿠도코로 텐스이 · 우오마치 (코쿠라역 도보 2분)</div>
-            <div class="restaurant-meta">코쿠라 소고기 지정 판매점. 도매 직영 합리적 가격</div>
-            <div class="restaurant-tags">
-              <span class="tag tag-meat">야키니쿠</span>
-              <span class="tag" style="background:#FFF8E1;color:#F57F17;">보통~고급</span>
-            </div>
-            <a href="https://www.google.com/maps/search/肉処天穂+北九州市小倉北区魚町" target="_blank" class="map-link">📍 지도 보기</a>
+        <div class="accordion-group" data-category="야키니쿠">
+          <div class="accordion-header" onclick="toggleAccordion(this)">
+            <span class="accordion-chevron">&#9654;</span>
+            <span>🥩 야키니쿠</span>
+            <span class="accordion-count"></span>
           </div>
+          <div class="accordion-body"><div class="accordion-body-inner">
+
+            <div class="restaurant-card" data-hardcoded="true">
+              <div class="restaurant-info">
+                <div class="restaurant-name">肉処 天穂 (ai추천)</div>
+                <div class="restaurant-meta">니쿠도코로 텐스이 · 우오마치 (코쿠라역 도보 2분)</div>
+                <div class="restaurant-meta">코쿠라 소고기 지정 판매점. 도매 직영 합리적 가격</div>
+                <div class="restaurant-tags">
+                  <span class="tag tag-meat">야키니쿠</span>
+                  <span class="tag" style="background:#FFF8E1;color:#F57F17;">보통~고급</span>
+                </div>
+                <a href="https://www.google.com/maps/search/肉処天穂+北九州市小倉北区魚町" target="_blank" class="map-link">📍 지도 보기</a>
+              </div>
+            </div>
+
+          </div></div>
         </div>
 
         <!-- Category: Cafe -->
-        <div style="font-size:13px;font-weight:600;color:var(--text-secondary);margin:20px 0 8px;padding-left:4px;">☕ 카페</div>
-
-        <div class="restaurant-card">
-          <div class="restaurant-info">
-            <div class="restaurant-name">KOKURA堂 (ai추천)</div>
-            <div class="restaurant-meta">코쿠라도 · 우오마치</div>
-            <div class="restaurant-meta">생과일 카키고리, 푸딩 크레이프. SNS 인기</div>
-            <div class="restaurant-tags">
-              <span class="tag tag-cafe">카페</span>
-              <span class="tag" style="background:#E8F5E9;color:#2E7D32;">저렴</span>
-            </div>
-            <a href="https://www.google.com/maps/search/KOKURA堂+北九州市小倉北区" target="_blank" class="map-link">📍 지도 보기</a>
+        <div class="accordion-group" data-category="카페">
+          <div class="accordion-header" onclick="toggleAccordion(this)">
+            <span class="accordion-chevron">&#9654;</span>
+            <span>☕ 카페</span>
+            <span class="accordion-count"></span>
           </div>
+          <div class="accordion-body"><div class="accordion-body-inner">
+
+            <div class="restaurant-card" data-hardcoded="true">
+              <div class="restaurant-info">
+                <div class="restaurant-name">KOKURA堂 (ai추천)</div>
+                <div class="restaurant-meta">코쿠라도 · 우오마치</div>
+                <div class="restaurant-meta">생과일 카키고리, 푸딩 크레이프. SNS 인기</div>
+                <div class="restaurant-tags">
+                  <span class="tag tag-cafe">카페</span>
+                  <span class="tag" style="background:#E8F5E9;color:#2E7D32;">저렴</span>
+                </div>
+                <a href="https://www.google.com/maps/search/KOKURA堂+北九州市小倉北区" target="_blank" class="map-link">📍 지도 보기</a>
+              </div>
+            </div>
+
+            <div class="restaurant-card" data-hardcoded="true">
+              <div class="restaurant-info">
+                <div class="restaurant-name">Little O Coffee and Donut (ai추천)</div>
+                <div class="restaurant-meta">리틀오 커피 앤 도넛 · 우오마치</div>
+                <div class="restaurant-meta">수제 도넛 + 스페셜티 커피. 히든 바 스타일</div>
+                <div class="restaurant-tags">
+                  <span class="tag tag-cafe">카페</span>
+                  <span class="tag" style="background:#E8F5E9;color:#2E7D32;">저렴</span>
+                </div>
+                <a href="https://www.google.com/maps/search/Little+O+Coffee+and+Donut+北九州市" target="_blank" class="map-link">📍 지도 보기</a>
+              </div>
+            </div>
+
+          </div></div>
         </div>
 
-        <div class="restaurant-card">
-          <div class="restaurant-info">
-            <div class="restaurant-name">Little O Coffee and Donut (ai추천)</div>
-            <div class="restaurant-meta">리틀오 커피 앤 도넛 · 우오마치</div>
-            <div class="restaurant-meta">수제 도넛 + 스페셜티 커피. 히든 바 스타일</div>
-            <div class="restaurant-tags">
-              <span class="tag tag-cafe">카페</span>
-              <span class="tag" style="background:#E8F5E9;color:#2E7D32;">저렴</span>
-            </div>
-            <a href="https://www.google.com/maps/search/Little+O+Coffee+and+Donut+北九州市" target="_blank" class="map-link">📍 지도 보기</a>
-          </div>
-        </div>
+        <div id="kitakyushu-dynamic-categories"></div>
 
       </div>
     </div>
 
+  </div>
+
+  <!-- Floating Add Restaurant Button -->
+  <button class="fab-add-restaurant" id="fabAddRestaurant" onclick="openRestaurantChoiceModal()">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+  </button>
+
+  <!-- Restaurant Choice Modal -->
+  <div class="modal-overlay" id="restaurantChoiceModal">
+    <div class="modal">
+      <div class="modal-title">추가하기</div>
+      <div class="modal-choice-list">
+        <button class="modal-choice-btn" onclick="openCategoryAddModal()">
+          <div class="modal-choice-icon" style="background:#FFF3E0;">📁</div>
+          <div>
+            <div style="font-weight:600;">카테고리 추가</div>
+            <div style="font-size:12px;color:var(--text-secondary);margin-top:2px;">새 카테고리를 만듭니다</div>
+          </div>
+        </button>
+        <button class="modal-choice-btn" onclick="openRestaurantAddModal()">
+          <div class="modal-choice-icon" style="background:#E3F2FD;">🍽️</div>
+          <div>
+            <div style="font-weight:600;">식당 추가</div>
+            <div style="font-size:12px;color:var(--text-secondary);margin-top:2px;">기존 카테고리에 식당을 추가합니다</div>
+          </div>
+        </button>
+      </div>
+      <div class="modal-actions" style="margin-top:16px;">
+        <button class="btn-cancel" onclick="closeRestaurantChoiceModal()">닫기</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Category Add Modal -->
+  <div class="modal-overlay" id="categoryAddModal">
+    <div class="modal">
+      <div class="modal-title">카테고리 추가</div>
+      <div class="form-group">
+        <label>카테고리 이모지</label>
+        <input type="text" id="cat-emoji" placeholder="예: 🍜" maxlength="4" style="width:60px;">
+      </div>
+      <div class="form-group">
+        <label>카테고리 이름</label>
+        <input type="text" id="cat-name" placeholder="예: 라멘">
+      </div>
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="closeCategoryAddModal()">취소</button>
+        <button class="btn-save" onclick="saveNewCategory()">저장</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Restaurant Add Modal -->
+  <div class="modal-overlay" id="restaurantAddModal">
+    <div class="modal">
+      <div class="modal-title">식당 추가</div>
+      <div class="form-group">
+        <label>카테고리 선택</label>
+        <select id="rest-category"></select>
+      </div>
+      <div class="form-group">
+        <label>식당명</label>
+        <input type="text" id="rest-name" placeholder="예: 이치란 본점">
+      </div>
+      <div class="form-group">
+        <label>설명 (선택)</label>
+        <input type="text" id="rest-desc" placeholder="예: 돈코츠 라멘 전문점">
+      </div>
+      <div class="form-group">
+        <label>위치/지역 (선택)</label>
+        <input type="text" id="rest-location" placeholder="예: 하카타구">
+      </div>
+      <div class="form-group">
+        <label>가격대</label>
+        <select id="rest-price">
+          <option value="저렴">저렴</option>
+          <option value="보통" selected>보통</option>
+          <option value="고급">고급</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>지도 링크 (선택)</label>
+        <input type="text" id="rest-map" placeholder="https://maps.app.goo.gl/...">
+      </div>
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="closeRestaurantAddModal()">취소</button>
+        <button class="btn-save" onclick="saveNewRestaurant()">저장</button>
+      </div>
+    </div>
   </div>
 
   <!-- Scroll Top Button -->
@@ -1599,6 +1903,294 @@
         }
       });
     })();
+
+    // ========== Accordion ==========
+    function toggleAccordion(headerEl) {
+      var group = headerEl.parentElement;
+      group.classList.toggle('open');
+    }
+
+    function updateAccordionCounts() {
+      document.querySelectorAll('.accordion-group').forEach(function(g) {
+        var count = g.querySelectorAll('.accordion-body-inner .restaurant-card').length;
+        var countEl = g.querySelector('.accordion-count');
+        if (countEl) countEl.textContent = '(' + count + ')';
+      });
+    }
+
+    // ========== FAB visibility ==========
+    function updateFabVisibility() {
+      var fab = document.getElementById('fabAddRestaurant');
+      var restaurantTab = document.getElementById('tab-restaurant');
+      if (restaurantTab && restaurantTab.classList.contains('active')) {
+        fab.style.display = 'flex';
+      } else {
+        fab.style.display = 'none';
+      }
+    }
+
+    // Override switchTab to also update FAB
+    var _origSwitchTab = switchTab;
+    switchTab = function(tabId, el) {
+      _origSwitchTab(tabId, el);
+      updateFabVisibility();
+    };
+    updateFabVisibility();
+
+    // ========== Restaurant localStorage ==========
+    var REST_STORAGE_KEY = 'restaurant_data_202604';
+
+    function getRestaurantData() {
+      return JSON.parse(localStorage.getItem(REST_STORAGE_KEY) || '{"categories":{},"restaurants":[]}');
+    }
+
+    function saveRestaurantData(data) {
+      localStorage.setItem(REST_STORAGE_KEY, JSON.stringify(data));
+    }
+
+    function getActiveArea() {
+      var activeBtn = document.querySelector('.area-toggle button.active');
+      if (!activeBtn) return 'fukuoka';
+      return activeBtn.textContent.trim() === '후쿠오카' ? 'fukuoka' : 'kitakyushu';
+    }
+
+    // Get all categories for the current area (hardcoded + dynamic)
+    function getAllCategories(area) {
+      var cats = [];
+      var container = document.getElementById('area-' + area);
+      if (!container) return cats;
+      container.querySelectorAll('.accordion-group[data-category]').forEach(function(g) {
+        var name = g.getAttribute('data-category');
+        // Get emoji from the header span
+        var headerSpans = g.querySelector('.accordion-header').querySelectorAll('span');
+        var emoji = '';
+        if (headerSpans.length >= 2) {
+          var txt = headerSpans[1].textContent.trim();
+          // Extract emoji (first char or two)
+          var match = txt.match(/^(\S+)\s/);
+          if (match) emoji = match[1];
+        }
+        cats.push({ name: name, emoji: emoji, area: area });
+      });
+      // Also add dynamic categories from localStorage
+      var data = getRestaurantData();
+      if (data.categories[area]) {
+        data.categories[area].forEach(function(c) {
+          // Don't duplicate if already in DOM
+          var exists = cats.some(function(ec) { return ec.name === c.name; });
+          if (!exists) cats.push({ name: c.name, emoji: c.emoji, area: area });
+        });
+      }
+      return cats;
+    }
+
+    // ========== Render dynamic content ==========
+    function renderDynamicContent() {
+      var data = getRestaurantData();
+
+      ['fukuoka', 'kitakyushu'].forEach(function(area) {
+        var container = document.getElementById(area + '-dynamic-categories');
+        if (!container) return;
+        container.innerHTML = '';
+
+        // Render dynamic categories
+        var dynCats = (data.categories[area] || []);
+        dynCats.forEach(function(cat) {
+          // Check if this category already exists as hardcoded
+          var areaEl = document.getElementById('area-' + area);
+          var existing = areaEl.querySelector('.accordion-group[data-category="' + cat.name + '"]');
+          if (existing && !existing.closest('#' + area + '-dynamic-categories')) {
+            // Category exists in hardcoded, skip creating new accordion
+            return;
+          }
+          var groupEl = document.createElement('div');
+          groupEl.className = 'accordion-group';
+          groupEl.setAttribute('data-category', cat.name);
+          groupEl.innerHTML = '<div class="accordion-header" onclick="toggleAccordion(this)">' +
+            '<span class="accordion-chevron">&#9654;</span>' +
+            '<span>' + escHtml(cat.emoji) + ' ' + escHtml(cat.name) + '</span>' +
+            '<span class="accordion-count"></span>' +
+            '</div>' +
+            '<div class="accordion-body"><div class="accordion-body-inner"></div></div>';
+          container.appendChild(groupEl);
+        });
+
+        // Render dynamic restaurants into their category accordion
+        (data.restaurants || []).forEach(function(r) {
+          if (r.area !== area) return;
+          var areaEl = document.getElementById('area-' + area);
+          var accordionGroup = areaEl.querySelector('.accordion-group[data-category="' + r.category + '"]');
+          if (!accordionGroup) return;
+          var inner = accordionGroup.querySelector('.accordion-body-inner');
+          if (!inner) return;
+
+          var priceColors = {
+            '저렴': 'background:#E8F5E9;color:#2E7D32;',
+            '보통': 'background:#FFF8E1;color:#F57F17;',
+            '고급': 'background:#FFEBEE;color:#B71C1C;'
+          };
+
+          var cardHtml = '<div class="restaurant-card" data-dynamic-id="' + r.id + '">' +
+            '<div class="restaurant-info">' +
+            '<div style="display:flex;justify-content:space-between;align-items:flex-start;">' +
+            '<div class="restaurant-name">' + escHtml(r.name) + '</div>' +
+            '<button onclick="deleteDynamicRestaurant(' + r.id + ')" style="border:none;background:#FFEBEE;color:#C62828;border-radius:8px;padding:4px 8px;font-size:11px;cursor:pointer;flex-shrink:0;margin-left:8px;">삭제</button>' +
+            '</div>';
+          if (r.location) {
+            cardHtml += '<div class="restaurant-meta">' + escHtml(r.location) + '</div>';
+          }
+          if (r.desc) {
+            cardHtml += '<div class="restaurant-meta">' + escHtml(r.desc) + '</div>';
+          }
+          cardHtml += '<div class="restaurant-tags">';
+          cardHtml += '<span class="tag" style="background:#F0F0F5;color:var(--text);">' + escHtml(r.category) + '</span>';
+          if (r.price) {
+            cardHtml += '<span class="tag" style="' + (priceColors[r.price] || '') + '">' + escHtml(r.price) + '</span>';
+          }
+          cardHtml += '</div>';
+          if (r.mapUrl) {
+            cardHtml += '<a href="' + escHtml(r.mapUrl) + '" target="_blank" class="map-link">📍 지도 보기</a>';
+          }
+          cardHtml += '</div></div>';
+
+          var tempDiv = document.createElement('div');
+          tempDiv.innerHTML = cardHtml;
+          var cardEl = tempDiv.firstChild;
+          inner.appendChild(cardEl);
+        });
+      });
+
+      updateAccordionCounts();
+      reinitFavorites();
+    }
+
+    function deleteDynamicRestaurant(id) {
+      if (!confirm('식당을 삭제하시겠습니까?')) return;
+      var data = getRestaurantData();
+      data.restaurants = data.restaurants.filter(function(r) { return r.id !== id; });
+      saveRestaurantData(data);
+      // Remove from DOM
+      var el = document.querySelector('[data-dynamic-id="' + id + '"]');
+      if (el) el.remove();
+      updateAccordionCounts();
+    }
+
+    // ========== Modals ==========
+    function openRestaurantChoiceModal() {
+      document.getElementById('restaurantChoiceModal').classList.add('active');
+    }
+    function closeRestaurantChoiceModal() {
+      document.getElementById('restaurantChoiceModal').classList.remove('active');
+    }
+
+    function openCategoryAddModal() {
+      closeRestaurantChoiceModal();
+      document.getElementById('cat-emoji').value = '';
+      document.getElementById('cat-name').value = '';
+      document.getElementById('categoryAddModal').classList.add('active');
+    }
+    function closeCategoryAddModal() {
+      document.getElementById('categoryAddModal').classList.remove('active');
+    }
+
+    function openRestaurantAddModal() {
+      closeRestaurantChoiceModal();
+      // Populate category dropdown
+      var area = getActiveArea();
+      var cats = getAllCategories(area);
+      var sel = document.getElementById('rest-category');
+      sel.innerHTML = '';
+      cats.forEach(function(c) {
+        var opt = document.createElement('option');
+        opt.value = c.name;
+        opt.textContent = (c.emoji ? c.emoji + ' ' : '') + c.name;
+        sel.appendChild(opt);
+      });
+      document.getElementById('rest-name').value = '';
+      document.getElementById('rest-desc').value = '';
+      document.getElementById('rest-location').value = '';
+      document.getElementById('rest-price').value = '보통';
+      document.getElementById('rest-map').value = '';
+      document.getElementById('restaurantAddModal').classList.add('active');
+    }
+    function closeRestaurantAddModal() {
+      document.getElementById('restaurantAddModal').classList.remove('active');
+    }
+
+    function saveNewCategory() {
+      var emoji = document.getElementById('cat-emoji').value.trim();
+      var name = document.getElementById('cat-name').value.trim();
+      if (!name) { alert('카테고리 이름을 입력해주세요.'); return; }
+      if (!emoji) emoji = '📁';
+
+      var area = getActiveArea();
+      var data = getRestaurantData();
+      if (!data.categories[area]) data.categories[area] = [];
+
+      // Check for duplicates
+      var allCats = getAllCategories(area);
+      var dup = allCats.some(function(c) { return c.name === name; });
+      if (dup) { alert('이미 존재하는 카테고리입니다.'); return; }
+
+      data.categories[area].push({ name: name, emoji: emoji });
+      saveRestaurantData(data);
+      closeCategoryAddModal();
+      renderDynamicContent();
+    }
+
+    function saveNewRestaurant() {
+      var category = document.getElementById('rest-category').value;
+      var name = document.getElementById('rest-name').value.trim();
+      if (!name) { alert('식당명을 입력해주세요.'); return; }
+      if (!category) { alert('카테고리를 선택해주세요.'); return; }
+
+      var area = getActiveArea();
+      var data = getRestaurantData();
+
+      var restaurant = {
+        id: Date.now(),
+        area: area,
+        category: category,
+        name: name,
+        desc: document.getElementById('rest-desc').value.trim(),
+        location: document.getElementById('rest-location').value.trim(),
+        price: document.getElementById('rest-price').value,
+        mapUrl: document.getElementById('rest-map').value.trim()
+      };
+
+      data.restaurants.push(restaurant);
+      saveRestaurantData(data);
+      closeRestaurantAddModal();
+      renderDynamicContent();
+    }
+
+    // ========== Re-init favorites for new cards ==========
+    function reinitFavorites() {
+      var TRIP_ID = '202604';
+      var favs = JSON.parse(localStorage.getItem('restaurant_favs_' + TRIP_ID) || '{}');
+      // Add fav buttons to cards that don't have one yet
+      document.querySelectorAll('.restaurant-card').forEach(function(card, i) {
+        if (card.querySelector('.fav-btn')) return; // already has button
+        var btn = document.createElement('button');
+        btn.textContent = favs[i] ? '\u2605' : '\u2606';
+        btn.style.color = favs[i] ? '#FFB300' : '#999';
+        btn.className = 'fav-btn' + (favs[i] ? ' active' : '');
+        btn.onclick = function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          favs[i] = !favs[i];
+          btn.textContent = favs[i] ? '\u2605' : '\u2606';
+          btn.style.color = favs[i] ? '#FFB300' : '#999';
+          btn.className = 'fav-btn' + (favs[i] ? ' active' : '');
+          localStorage.setItem('restaurant_favs_' + TRIP_ID, JSON.stringify(favs));
+        };
+        card.appendChild(btn);
+      });
+    }
+
+    // Initialize on page load
+    updateAccordionCounts();
+    renderDynamicContent();
   </script>
 
 </body>

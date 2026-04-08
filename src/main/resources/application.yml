@@ -5,10 +5,10 @@ spring:
   application:
     name: my-travel
   datasource:
-    url: jdbc:h2:file:./data/travel-db
+    url: jdbc:h2:file:./data/travel-db;AUTO_SERVER=TRUE
     driver-class-name: org.h2.Driver
     username: sa
-    password:
+    password: chuva2026!
   jpa:
     hibernate:
       ddl-auto: update
