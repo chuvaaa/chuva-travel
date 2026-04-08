@@ -1257,17 +1257,24 @@
         html += '</div>';
 
         // 일정 사이 삽입 버튼
-        if (i < schedData.length - 1) {
+        var isLastItem = (i === schedData.length - 1);
+        var isLastOfDay = isLastItem || (schedData[i+1].date !== s.date);
+        if (!isLastOfDay) {
+          // 같은 날 다음 일정 사이: 중간 sortOrder 사용
           var nextSort = schedData[i+1].sortOrder;
           var curSort = s.sortOrder;
           var midSort = (curSort + nextSort) / 2;
           var insertDate = s.date;
-          // 다음 일정이 다른 날이면 삽입 버튼 생략 (DAY 헤더 사이에는 하단 + 버튼 사용)
-          if (schedData[i+1].date === s.date) {
-            html += '<button class="insert-btn" style="opacity:0.3;" onclick="openScheduleModal(null, \'' + insertDate + '\', ' + midSort + ')">';
-            html += '<span class="line"></span><span class="plus">+</span><span class="line"></span>';
-            html += '</button>';
-          }
+          html += '<button class="insert-btn" style="opacity:0.3;" onclick="openScheduleModal(null, \'' + insertDate + '\', ' + midSort + ')">';
+          html += '<span class="line"></span><span class="plus">+</span><span class="line"></span>';
+          html += '</button>';
+        } else {
+          // 해당 날의 마지막 일정 이후: sortOrder + 1 사용
+          var insertSort = s.sortOrder + 1;
+          var insertDate = s.date;
+          html += '<button class="insert-btn" style="opacity:0.3;" onclick="openScheduleModal(null, \'' + insertDate + '\', ' + insertSort + ')">';
+          html += '<span class="line"></span><span class="plus">+</span><span class="line"></span>';
+          html += '</button>';
         }
       });
 
